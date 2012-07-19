@@ -11,7 +11,8 @@ sub auth :Path('/auth') {
         username => $c->req->param('username'),
         password => $c->req->param('password'),
     } ) ){
-        $c->res->body( 'pass' );
+        my $user = $c->user;
+        $c->res->body( $c->user->info->{'first-name'} );
     } else {
         $c->res->body( 'fail' );
     }

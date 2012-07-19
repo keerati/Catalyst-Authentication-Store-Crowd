@@ -15,7 +15,7 @@ my $mech = Test::WWW::Mechanize::Catalyst->new;
 
 subtest "authentication pass" => sub {
     $mech->get_ok('/auth?username=kee&password=test');
-    $mech->content_contains( 'pass' );
+    $mech->content_contains( 'Keerati' );
     done_testing();
 };
 
