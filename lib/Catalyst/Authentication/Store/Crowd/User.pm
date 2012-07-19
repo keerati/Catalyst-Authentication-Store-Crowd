@@ -1,18 +1,11 @@
-package Startsiden::Frontpage::Admin::Authentication::Store::Crowd::User;
-
-use warnings;
+package Catalyst::Authentication::Store::Crowd::User;
 
 use Moose;
 extends 'Catalyst::Authentication::User';
 
-has 'name' => ( is => 'ro', isa => 'Str' );
-has 'display_name' => ( is => 'ro', isa => 'Str' );
-has 'email' => ( is => 'ro', isa => 'Str' );
-has 'first_name' => ( is => 'ro', isa => 'Str' );
-has 'last_name' => ( is => 'ro', isa => 'Str' );
-has 'active' => ( is => 'ro', isa => 'Bool' );
+has 'info' => ( is => 'ro', isa => 'HashRef' );
 
-sub supported_features {
+sub supports {
     return { session => 1 };
 }
 

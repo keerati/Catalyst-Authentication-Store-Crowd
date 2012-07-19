@@ -9,13 +9,12 @@ use JSON;
 
 use Catalyst::Authentication::Store::Crowd::User;
 
-
 has 'find_user_url' => (
     is => 'ro',
     isa => 'Str',
     required => '1',
     default => sub {
-        'https://crowd.startsiden.no/crowd/rest/usermanagement/latest/user';
+        'http://localhost';
     }
 );
 
@@ -36,10 +35,10 @@ around BUILDARGS => sub {
 };
 
 sub find_user {
-    my ($self, $authinfo) = @_;
-    my $crowd_user = $self->_crowd_get_user( $authinfo->{username} );
+    my ($self, $info) = @_;
+    my $crowd_user_info = $self->_crowd_get_user( $info->{username} );
     return Catalyst::Authentication::Store::Crowd::User->new(
-        $crowd_user
+        info => $crowd_user_info
     );
 }
 
@@ -53,9 +52,14 @@ sub for_session {
     return $user;
 }
 
+sub user_supports {
+    my $self = shift;
+    Catalyst::Authentication::Store::Crowd::User->supports(@_);
+}
+
 sub _crowd_get_user {
     my ( $self, $username ) = @_;
-    my $ua = LWP::UserAgent->new('Startsiden Frontpage Admin Client');
+    my $ua = LWP::UserAgent->new;
     my $uri = $self->find_user_url."?username=$username";
     my $req = HTTP::Request->new( 'GET',  $uri );
     $req->authorization_basic(
@@ -65,24 +69,7 @@ sub _crowd_get_user {
     $req->header('Accept' => 'application/json');
 
     my $response = $ua->request( $req );
-    my $json_hash = from_json( $response->decoded_content );
-    $json_hash->{active} = $json_hash->{active} ? 1 : 0;
-    return $self->_replace_dash_in_keys( $json_hash );
-}
-
-sub _replace_dash_in_keys {
-    my ($self, $json_data) = @_;
-    foreach my $key ( keys %$json_data ){
-        if ( $key =~ m/\-/ ){
-            # replace - with _
-            my $new_key = $key;
-            $new_key =~ s/\-/_/g;
-            # delete old key and make new key
-            $json_data->{$new_key} = $json_data->{$key};
-            delete $json_data->{$key};
-        }
-    }
-    return $json_data;
+    return from_json( $response->decoded_content );
 }
 
 1;
@@ -91,7 +78,7 @@ __END__
 
 =head1 NAME
 
-Catalyst::Authentication::Credential::Crowd - Authenticate a user using Crowd REST Service
+Catalyst::Authentication::Store::Crowd - Authentication Store with Crowd REST service
 
 =head1 SYNOPSIS
 
@@ -112,48 +99,21 @@ Catalyst::Authentication::Credential::Crowd - Authenticate a user using Crowd RE
                         password => 'password_for_app_name',
                     }
                 },
-                store => ...
+                store => {
+                    class => 'Crowd',
+                    service_url => 'http://yourcrowdservice.url/user,
+                    app => {
+                        app_name => 'your_crowd_app_name',
+                        password => 'password_for_app_name',
+                    }
+                }
             },
         }
     });
 
-    # in controller
-
-    sub login : Local {
-        my ( $self, $c ) = @_;
-
-        $c->authenticate( {
-            username => $c->req->param('username'),
-            password => $c->req->param('password')
-        }
-
-        # ... do something else ...
-    }
-
-=head1 METHODS
-
-=head2 authenticate
-
-Authenticate a user. This method is called from context object Ex. $c->authenticate
-
-
-=head1 PRIVATE METHODS
-
-=head2 _crowd_authen
-
-Make a HTTP request to Crowd REST Service to authenticate a user.
-
-
 =head1 SEE ALSO
 
-Mention other useful documentation such as the documentation of
-related modules or operating system documentation (such as man pages
-in UNIX), or any relevant external documentation such as RFCs or
-standards.
-
-If you have a mailing list set up for your module, mention it here.
-
-If you have a web site set up for your module, mention it here.
+https://github.com/keerati/Catalyst-Authentication-Store-Crowd
 
 =head1 AUTHOR
 
