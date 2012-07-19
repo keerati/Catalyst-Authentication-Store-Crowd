@@ -14,12 +14,12 @@ __PACKAGE__->config(
         use_session => 1,
         default => {
             credential => {
-                class => 'Crowd',
-                authen_url => "http://localhost:$crowd_port/authen",
+                class => 'Password',
+                password_type => 'none',
             },
             store => {
                 class => 'Crowd',
-                find_user_url => "http://localhost:$crowd_port/user",
+                find_user_url => "http://localhost:$crowd_port",
             }
         }
     }

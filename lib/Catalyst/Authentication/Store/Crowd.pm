@@ -36,10 +36,14 @@ around BUILDARGS => sub {
 
 sub find_user {
     my ($self, $info) = @_;
-    my $crowd_user_info = $self->_crowd_get_user( $info->{username} );
-    return Catalyst::Authentication::Store::Crowd::User->new(
-        info => $crowd_user_info
-    );
+    my $response = $self->_crowd_get_user( $info->{username} );
+    if ( $response->is_success ){
+        my $crowd_user_info = from_json( $response->decoded_content );
+        return Catalyst::Authentication::Store::Crowd::User->new(
+            info => $crowd_user_info
+        );
+    }
+    return;
 }
 
 sub from_session {
@@ -69,7 +73,7 @@ sub _crowd_get_user {
     $req->header('Accept' => 'application/json');
 
     my $response = $ua->request( $req );
-    return from_json( $response->decoded_content );
+    return $response;
 }
 
 1;

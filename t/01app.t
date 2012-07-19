@@ -6,7 +6,7 @@ use FindBin;
 use lib "$FindBin::Bin/lib";
 
 BEGIN {
-    use_ok("Catalyst::Authentication::Credential::Crowd");
+    use_ok("Catalyst::Authentication::Store::Crowd");
     use_ok("TestApp");
 }
 
