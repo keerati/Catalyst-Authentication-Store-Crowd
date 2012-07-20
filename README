@@ -1,8 +1,8 @@
-=head1 NAME
+NAME
 
 Catalyst::Authentication::Store::Crowd - Authentication Store with Crowd REST service
 
-=head1 SYNOPSIS
+SYNOPSIS
 
     use Catalyst qw/
         Authentication
@@ -33,19 +33,17 @@ Catalyst::Authentication::Store::Crowd - Authentication Store with Crowd REST se
         }
     });
 
-=head1 SEE ALSO
+SEE ALSO
 
 https://github.com/keerati/Catalyst-Authentication-Store-Crowd
 
-=head1 AUTHOR
+AUTHOR
 
 Keerati Thiwanruk, <keerati.th@gmail.com>
 
-=head1 COPYRIGHT AND LICENSE
+COPYRIGHT AND LICENSE
 
 Copyright (C) 2012 by Keerati Thiwanruk
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
-
-=cut
