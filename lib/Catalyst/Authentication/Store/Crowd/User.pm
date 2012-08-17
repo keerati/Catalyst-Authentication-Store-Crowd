@@ -5,6 +5,8 @@ extends 'Catalyst::Authentication::User';
 
 has 'info' => ( is => 'ro', isa => 'HashRef' );
 
+sub id { shift->info->{name}; }
+
 sub supported_features {
     return { session => 1 };
 }

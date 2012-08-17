@@ -3,3 +3,5 @@ Revision history for Perl extension Catalyst::Authentication::Store::Crowd.
 0.01  Thu Jul  20 18:00:00 2012
 	- Initial release.
 
+0.02  Fri Aug  20 13:45:00 2012
+	- Fix Deep recursion on subroutine "Catalyst::Authentication::User::id"

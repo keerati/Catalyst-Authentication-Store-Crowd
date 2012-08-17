@@ -1,5 +1,7 @@
 package Catalyst::Authentication::Store::Crowd;
 
+our $VERSION = 0.02;
+
 use warnings;
 use Moose;
 
