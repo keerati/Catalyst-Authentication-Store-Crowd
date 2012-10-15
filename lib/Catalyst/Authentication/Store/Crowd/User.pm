@@ -5,10 +5,15 @@ extends 'Catalyst::Authentication::User';
 
 has 'info' => ( is => 'ro', isa => 'HashRef' );
 
-sub id { shift->info->{name}; }
+sub id { shift->get('name'); }
 
 sub supported_features {
     return { session => 1 };
+}
+
+sub get {
+    my ($self, $field) = @_;
+    return $self->info->{$field};
 }
 
 1;
