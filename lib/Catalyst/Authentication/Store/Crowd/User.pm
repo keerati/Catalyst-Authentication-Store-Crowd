@@ -3,13 +3,11 @@ package Catalyst::Authentication::Store::Crowd::User;
 use Moose;
 extends 'Catalyst::Authentication::User';
 
-has 'info' => ( is => 'ro', isa => 'HashRef' );
+has 'info' => (is => 'ro', isa => 'HashRef');
 
 sub id { shift->get('name'); }
 
-sub supported_features {
-    return { session => 1 };
-}
+sub supported_features { return { session => 1 }; }
 
 sub get {
     my ($self, $field) = @_;
@@ -31,6 +29,11 @@ Catalyst::Authentication::Store::Crowd::User - A user object representing a Crow
 =head2 supported_features
 
 Method using for enabling session
+
+=head2 get
+
+Get user info attributes
+Ex. $user->get('display-name')
 
 =head1 AUTHOR
 

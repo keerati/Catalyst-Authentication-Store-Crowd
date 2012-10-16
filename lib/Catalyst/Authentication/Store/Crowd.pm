@@ -1,6 +1,6 @@
 package Catalyst::Authentication::Store::Crowd;
 
-our $VERSION = 0.03;
+our $VERSION = 0.04;
 
 use warnings;
 use Moose;
@@ -41,9 +41,9 @@ sub find_user {
     my $response = $self->_crowd_get_user( $info->{username} );
     if ( $response->is_success ){
         my $crowd_user_info = from_json( $response->decoded_content );
-        return Catalyst::Authentication::Store::Crowd::User->new(
+        return Catalyst::Authentication::Store::Crowd::User->new({
             info => $crowd_user_info
-        );
+        });
     }
     return;
 }
